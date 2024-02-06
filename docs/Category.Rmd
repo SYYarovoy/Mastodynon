@@ -1,0 +1,96 @@
+---
+title: "Hac"
+author: "Sergey_Yarovoy"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(gtsummary)
+library(broom)
+library(summarytools)
+library(rstatix)
+```
+
+
+```{r}
+library(rstatix)
+#Чтение данных
+data <- read.csv2("team_5.csv", stringsAsFactors = TRUE, encoding = "UTF-8")
+```
+
+```{r}
+#Сабсет с группой Мастодинона: 
+data2 <- data_cleaned %>%
+  filter(`V0_GRP` == "Мастодинон")
+
+#ЭКГ в группе Мастодинона:
+sopr2 <- data2 %>%       
+  select(V1_NORM_ECG, V2_NORM_ECG)
+
+sopr_ispravl <- matrix(c(sum(sopr2[,1] == 0 & sopr2[,2] == 0), sum(sopr2[,1] == 0 & sopr2[,2] == 1), sum(sopr2[,1] == 1 & sopr2[,2] == 0), sum(sopr2[,1] == 1 & sopr2[,2] == 1)), nrow = 2, ncol = 2, byrow = TRUE, dimnames = list(c("V1_ECG_NORM=0", "V1_ECG_NORM=1"), c("V2_ECG_NORM=0", "V2_ECG_NORM=1"))) %>% print()
+
+mcn <- sopr_ispravl %>%
+  mcnemar.test() %>%
+  tidy()
+
+#Физикальный осмотр в группе Мастодинона:
+sopr2 <- data2 %>%       
+  select(V1_NORM_PHYS, V2_NORM_PHYS)
+
+sopr_ispravl <- matrix(c(sum(sopr2[,1] == 0 & sopr2[,2] == 0), sum(sopr2[,1] == 0 & sopr2[,2] == 1), sum(sopr2[,1] == 1 & sopr2[,2] == 0), sum(sopr2[,1] == 1 & sopr2[,2] == 1)), nrow = 2, ncol = 2, byrow = TRUE, dimnames = list(c("V1_ECG_PHYS=0", "V1_ECG_PHYS=1"), c("V2_ECG_PHYS=0", "V2_ECG_PHYS=1"))) %>% print()
+
+mcn <- sopr_ispravl %>%
+  mcnemar.test() %>%
+  tidy()
+
+#Витальные показатели осмотр в группе Мастодинона:
+sopr2 <- data2 %>%       
+  select(V1_NORM_VIT, V2_NORM_VIT)
+
+sopr_ispravl <- matrix(c(sum(sopr2[,1] == 0 & sopr2[,2] == 0), sum(sopr2[,1] == 0 & sopr2[,2] == 1), sum(sopr2[,1] == 1 & sopr2[,2] == 0), sum(sopr2[,1] == 1 & sopr2[,2] == 1)), nrow = 2, ncol = 2, byrow = TRUE, dimnames = list(c("V1_ECG_VIT=0", "V1_ECG_VIT=1"), c("V2_ECG_VIT=0", "V2_ECG_VIT=1"))) %>% print()
+
+mcn <- sopr_ispravl %>%
+  mcnemar.test() %>%
+  tidy()
+
+
+
+#Сабсет с группой Плацебо: 
+data3 <- data_cleaned %>%
+  filter(`V0_GRP` == "Плацебо")
+
+#ЭКГ в группе Плацебо:
+sopr3 <- data3 %>%       
+  select(V1_NORM_ECG, V2_NORM_ECG)
+
+sopr_ispravl <- matrix(c(sum(sopr3[,1] == 0 & sopr3[,2] == 0), sum(sopr3[,1] == 0 & sopr3[,2] == 1), sum(sopr3[,1] == 1 & sopr3[,2] == 0), sum(sopr3[,1] == 1 & sopr3[,2] == 1)), nrow = 2, ncol = 2, byrow = TRUE, dimnames = list(c("V1_ECG_NORM=0", "V1_ECG_NORM=1"), c("V2_ECG_NORM=0", "V2_ECG_NORM=1"))) %>% print()
+
+mcn <- sopr_ispravl %>%
+  mcnemar.test() %>%
+  tidy()
+
+#Физикальный осмотр в группе Плацебо:
+sopr3 <- data3 %>%       
+  select(V1_NORM_PHYS, V2_NORM_PHYS)
+
+sopr_ispravl <- matrix(c(sum(sopr3[,1] == 0 & sopr3[,2] == 0), sum(sopr3[,1] == 0 & sopr3[,2] == 1), sum(sopr3[,1] == 1 & sopr3[,2] == 0), sum(sopr3[,1] == 1 & sopr3[,2] == 1)), nrow = 2, ncol = 2, byrow = TRUE, dimnames = list(c("V1_ECG_PHYS=0", "V1_ECG_PHYS=1"), c("V2_ECG_PHYS=0", "V2_ECG_PHYS=1"))) %>% print()
+
+mcn <- sopr_ispravl %>%
+  mcnemar.test() %>%
+  tidy()
+
+#Витальные показатели осмотр в группе Плацебо:
+sopr3 <- data3 %>%       
+  select(V1_NORM_VIT, V2_NORM_VIT)
+
+sopr_ispravl <- matrix(c(sum(sopr3[,1] == 0 & sopr3[,2] == 0), sum(sopr3[,1] == 0 & sopr3[,2] == 1), sum(sopr3[,1] == 1 & sopr3[,2] == 0), sum(sopr3[,1] == 1 & sopr3[,2] == 1)), nrow = 2, ncol = 2, byrow = TRUE, dimnames = list(c("V1_ECG_VIT=0", "V1_ECG_VIT=1"), c("V2_ECG_VIT=0", "V2_ECG_VIT=1"))) %>% print()
+
+mcn <- sopr_ispravl %>%
+  mcnemar.test() %>%
+  tidy()
+```
+
